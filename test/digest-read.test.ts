@@ -2,7 +2,8 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { countStatuses, readNight } from '../src/digest/read.js';
+import { countStatuses } from '../src/digest/counts.js';
+import { readNight } from '../src/digest/read.js';
 
 describe('readNight on runs/2026-10-28.jsonl', () => {
   const night = readNight('runs', '2026-10-28');
@@ -51,8 +52,8 @@ describe('readNight on runs/2026-10-28.jsonl', () => {
     expect(row?.lastAt).toBe('2026-10-29T05:00:04+01:00');
   });
 
-  it('counts jobs per last status', () => {
-    expect(night && countStatuses(night)).toEqual({ ok: 4, retry: 0, fail: 1 });
+  it('counts lines per status', () => {
+    expect(night && countStatuses(night)).toEqual({ ok: 10, retry: 4, fail: 1 });
   });
 });
 
@@ -71,7 +72,7 @@ describe('readNight edge cases', () => {
 
   it('returns no rows for an empty file', () => {
     writeFileSync(join(dir, '2026-01-02.jsonl'), '');
-    expect(readNight(dir, '2026-01-02')).toEqual({ night: '2026-01-02', rows: [], badLines: 0 });
+    expect(readNight(dir, '2026-01-02')).toEqual({ night: '2026-01-02', rows: [], badLines: 0, lines: { ok: 0, retry: 0, fail: 0 } });
   });
 
   it('counts invalid lines instead of throwing', () => {

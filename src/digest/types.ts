@@ -27,6 +27,7 @@ export type Night = {
   night: string; // YYYY-MM-DD
   rows: DigestRow[]; // sorted by job
   badLines: number; // lines that did not parse; counted, never thrown
+  lines: Record<RunStatus, number>; // parsed lines by status (the board's ok / retry / fail counts)
 };
 
 /**

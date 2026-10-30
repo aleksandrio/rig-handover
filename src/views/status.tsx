@@ -23,8 +23,8 @@ export function StatusBoard({ status }: { status: Status }) {
             <li>
               <a href={`/digest/${night}`}>{night}</a>{' '}
               <span class="mute">
-                ok jobs {counts ? counts.ok : '—'} · retry lines {counts ? counts.retry : '—'} · failed
-                jobs {counts ? counts.fail : '—'}
+                ok {counts ? counts.ok : '—'} · retry {counts ? counts.retry : '—'} · fail{' '}
+                {counts ? counts.fail : '—'}
               </span>
             </li>
           ))}
